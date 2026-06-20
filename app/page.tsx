@@ -36,7 +36,7 @@ export default function AdminLogin() {
         <div
           className="absolute inset-0 opacity-[0.07] pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(circle, #F8F6F0 1px, transparent 1px)",
+             
             backgroundSize: "22px 22px",
           }}
         />
@@ -146,14 +146,7 @@ export default function AdminLogin() {
         </div>
 
         <div className="w-full max-w-sm">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="h-7 w-7 rounded-full bg-[#D8F3DC] flex items-center justify-center">
-              <ShieldCheck className="h-4 w-4 text-[#1B4332]" strokeWidth={2.25} />
-            </div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#40916C]">
-              Acceso administrador
-            </span>
-          </div>
+          
 
           <h2 className="text-2xl font-bold tracking-tight text-[#14201B] mb-1">
             Inicia sesión
