@@ -15,11 +15,11 @@ import {
 // Cada item referencia el caso de uso del diagrama (Administrador_Municipal)
 const NAV_ITEMS = [
   { cu: null, label: "Bienvenida", href: "/bienvenida", icon: LayoutDashboard },
-  { cu: "CU02", label: "Gestionar usuarios", href: "/usuarios", icon: Users },
-  { cu: "CU03", label: "Gestionar rutas", href: "/rutas", icon: Map },
-  { cu: "CU04", label: "Asignar rutas", href: "/asignar-rutas", icon: Route },
-  { cu: "CU05", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
-  { cu: "CU06", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
+  { cu: " ", label: "Gestionar usuarios", href: "/usuarios", icon: Users },
+  { cu: " ", label: "Gestionar rutas", href: "/rutas", icon: Map },
+  { cu: " ", label: "Asignar rutas", href: "/asignar-rutas", icon: Route },
+  { cu: " ", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
+  { cu: " ", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
 ];
 
 export default function AdminSidebar() {
