@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import AdminSidebar from "../components/Sidebar";
 import UserModal from "./UserModal";
 import {
   Search,
@@ -9,7 +8,6 @@ import {
   Pencil,
   Trash2,
   Users as UsersIcon,
-  ShieldCheck,
   Truck,
   UserRound,
   ChevronDown,
@@ -89,10 +87,7 @@ export default function UsuariosPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8F6F0]">
-      <AdminSidebar />
-
-      <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1200px]">
+    <>
         {/* header */}
         <div className="flex items-start justify-between mb-6">
           <div>
@@ -241,7 +236,7 @@ export default function UsuariosPage() {
             </tbody>
           </table>
         </div>
-      </main>
+
 
       {/* mismo modal sirve para crear y editar — solo cambia "modalMode" */}
       <UserModal
@@ -251,6 +246,6 @@ export default function UsuariosPage() {
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
       />
-    </div>
+    </>
   );
 }

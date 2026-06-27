@@ -1,6 +1,5 @@
 "use client";
 
-import AdminSidebar from "../components/Sidebar";
 import {
   Users,
   Map,
@@ -28,10 +27,7 @@ const ACTIVITY = [
 
 export default function BienvenidaPage() {
   return (
-    <div className="flex min-h-screen bg-[#F8F6F0]">
-      <AdminSidebar />
-
-      <main className="flex-1 px-6 lg:px-10 py-8 max-w-[1200px]">
+    <>
         {/* header */}
         <div className="flex items-start justify-between mb-8">
           <div>
@@ -137,7 +133,6 @@ export default function BienvenidaPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </>
   );
 }

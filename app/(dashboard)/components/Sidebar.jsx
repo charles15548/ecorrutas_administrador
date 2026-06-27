@@ -9,7 +9,6 @@ import {
   Radar,
   FileWarning,
   LogOut,
-  Truck,
 } from "lucide-react";
 
 // Cada item referencia el caso de uso del diagrama (Administrador_Municipal)
@@ -22,12 +21,18 @@ const NAV_ITEMS = [
   { cu: " ", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
   const pathname = usePathname();
   const router = useRouter();
 
+  const isMobile = variant === "mobile";
+
   return (
-    <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 bg-[#1B4332] text-[#F8F6F0]">
+    <aside
+      className={`${
+        isMobile ? "flex" : "hidden lg:flex"
+      } flex-col w-64 shrink-0 ${isMobile ? "h-dvh" : "h-screen sticky top-0"} bg-[#1B4332] text-[#F8F6F0]`}
+    >
       {/* brand */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10">
         {/* <div className="h-9 w-9 rounded-lg bg-[#40916C] flex items-center justify-center shrink-0">
@@ -50,7 +55,10 @@ export default function AdminSidebar() {
             <button
               key={item.href}
               type="button"
-              onClick={() => router.push(item.href)}
+              onClick={() => {
+                router.push(item.href);
+                onNavigate?.();
+              }}
               className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
                 isActive
                   ? "bg-[#40916C] text-[#F8F6F0] font-semibold"
@@ -86,7 +94,10 @@ export default function AdminSidebar() {
         </div>
         <button
           type="button"
-          onClick={() => router.push("/")}
+          onClick={() => {
+            router.push("/");
+            onNavigate?.();
+          }}
           className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#CDE7DA] hover:bg-white/5 hover:text-[#F8F6F0] transition-colors"
         >
           <LogOut className="h-4 w-4 shrink-0" strokeWidth={2} />
