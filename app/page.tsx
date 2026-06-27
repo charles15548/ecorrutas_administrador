@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Truck, ShieldCheck, User, Lock, Eye, EyeOff, MapPin } from "lucide-react";
-import Image from "next/image";
+import { Truck, User, Lock, Eye, EyeOff, MapPin } from "lucide-react";
 
 // Route stops for the decorative "live route" graphic on the left panel.
 // Coordinates are in a 320x380 space matching the SVG viewBox below.
@@ -22,10 +21,26 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-    const handleLogin = () => {
-    router.push("/bienvenida");
+  // Ejemplo para demo (solo para que funcione el login en local).
+  const DEMO_ADMIN = { correo: "admin@gmail.com", contraseña: "admin" } as const;
+
+  const handleLogin = () => {
+    const correoIngresado = email.trim().toLowerCase();
+    const passwordIngresado = password;
+
+    if (
+      correoIngresado === DEMO_ADMIN.correo.toLowerCase() &&
+      passwordIngresado === DEMO_ADMIN["contraseña"]
+    ) {
+      setError(null);
+      router.push("/bienvenida");
+      return;
+    }
+
+    setError("Credenciales inválidas. ");
   };
 
   return (
@@ -46,13 +61,13 @@ export default function AdminLogin() {
           <div className="   flex items-center justify-center  ">
              <img
                 src="/logo.jpeg"
-                
-                className="w-30 h-auto mx-auto rounded-2xl object-contain "
+                alt="ECO SMART"
+                className="w-48 h-auto mx-auto rounded-2xl object-contain "
               />
 
           </div>
           <div className="pt-10">
-            <p className="font-bold tracking-tight text-lg leading-none">ECO SMART</p>
+            <p className="font-bold tracking-tight text-2xl leading-none">ECO SMART</p>
             <p className="text-[11px] uppercase tracking-widest text-[#95D5B2] mt-0.5">
               Independencia · Lima
             </p>
@@ -156,6 +171,11 @@ export default function AdminLogin() {
           </p>
 
           <div className="space-y-4">
+            {error ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-700">
+                {error}
+              </div>
+            ) : null}
             {/* email */}
             <div>
               <label className="block text-xs font-medium text-neutral-600 mb-1.5">
@@ -198,7 +218,7 @@ export default function AdminLogin() {
               </div>
             </div>
 
-            {/* remember / forgot */}
+            {/* remember / forgot 
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center gap-2 text-sm text-neutral-600 cursor-pointer">
                 <input
@@ -213,7 +233,7 @@ export default function AdminLogin() {
               >
                 ¿Olvidaste tu contraseña?
               </button>
-            </div>
+            </div>*/}
 
             {/* submit — visual only, no auth logic yet */}
             <button

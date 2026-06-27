@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { cu: " ", label: "Asignar rutas", href: "/asignar-rutas", icon: Route },
   { cu: " ", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
   { cu: " ", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
+  { cu: " ", label: "Reportes conductores", href: "/reportes-conductores", icon: FileWarning },
 ];
 
 export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
