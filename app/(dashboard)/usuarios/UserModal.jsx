@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { X, UserRound, Mail, Phone, Lock, ShieldCheck } from "lucide-react";
 
 const ROLES = [
@@ -20,22 +20,21 @@ const EMPTY_FORM = {
 
 // mode: "create" | "edit" — mismo formulario para ambos casos
 export default function UserModal({ open, mode = "create", user = null, onClose, onSave }) {
-  const [form, setForm] = useState(EMPTY_FORM);
-
-  useEffect(() => {
+  const initialForm = useMemo(() => {
     if (mode === "edit" && user) {
-      setForm({
+      return {
         nombre: user.nombre ?? "",
         correo: user.correo ?? "",
         telefono: user.telefono ?? "",
         rol: user.rol ?? "ciudadano",
         estado: user.estado ?? "activo",
         password: "",
-      });
-    } else {
-      setForm(EMPTY_FORM);
+      };
     }
-  }, [mode, user, open]);
+    return EMPTY_FORM;
+  }, [mode, user]);
+
+  const [form, setForm] = useState(initialForm);
 
   if (!open) return null;
 

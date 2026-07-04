@@ -240,6 +240,7 @@ export default function UsuariosPage() {
 
       {/* mismo modal sirve para crear y editar — solo cambia "modalMode" */}
       <UserModal
+        key={`${modalMode}-${activeUser?.id ?? "new"}-${modalOpen ? "open" : "closed"}`}
         open={modalOpen}
         mode={modalMode}
         user={activeUser}
