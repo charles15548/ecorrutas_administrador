@@ -32,7 +32,7 @@ export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
     <aside
       className={`${
         isMobile ? "flex" : "hidden lg:flex"
-      } flex-col w-64 shrink-0 ${isMobile ? "h-dvh" : "h-screen sticky top-0"} bg-[#1B4332] text-[#F8F6F0]`}
+      } flex-col w-64 shrink-0 ${isMobile ? "h-dvh" : "h-screen sticky top-0"} bg-[var(--ColorVerdeHover)] text-[#F8F6F0]`}
     >
       {/* brand */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10">

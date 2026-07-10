@@ -1,8 +1,8 @@
 "use client";
 
-const DEFAULT_BACKEND_URL = "https://ecoruta-smart-backend.onrender.com";
+export const DEFAULT_BACKEND_URL = "https://ecoruta-smart-backend.onrender.com";
 
-function getBackendBaseUrl() {
+export function getBackendBaseUrl() {
   return (
     process.env.NEXT_PUBLIC_ECORUTA_BACKEND_URL ||
     process.env.NEXT_PUBLIC_BACKEND_URL ||
@@ -10,13 +10,13 @@ function getBackendBaseUrl() {
   );
 }
 
-function joinUrl(base, path) {
+export function joinUrl(base, path) {
   const normalizedBase = String(base ?? "").replace(/\/+$/, "");
   const normalizedPath = String(path ?? "").replace(/^\/+/, "");
   return `${normalizedBase}/${normalizedPath}`;
 }
 
-async function requestJson(path, init) {
+export async function requestJson(path, init) {
   const url = joinUrl(getBackendBaseUrl(), path);
   const res = await fetch(url, {
     ...init,
@@ -53,3 +53,5 @@ export function cambiarEstadoReporte(idReporte, estado) {
     body: JSON.stringify({ estado }),
   });
 }
+
+

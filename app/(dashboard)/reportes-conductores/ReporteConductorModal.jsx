@@ -1,12 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Calendar, ImageIcon, MapPin, Tag, ChevronDown, X } from "lucide-react";
+import { Calendar, Clock, ImageIcon, MapPin, Tag, ChevronDown, X } from "lucide-react";
 
 export const ESTADO_META = {
   PENDIENTE: { label: "Pendiente", color: "bg-[#FFE8CC] text-[#8A5A00]" },
   RESUELTO: { label: "Resuelto", color: "bg-[#D8F3DC] text-[#1B4332]" },
-  RECHAZADO: { label: "Rechazado", color: "bg-[#FDE8E8] text-[#8A0000]" },
   DEFAULT: { label: "Estado", color: "bg-neutral-100 text-neutral-600" },
 };
 
@@ -16,6 +15,16 @@ function toImageSrc(fotoBase64) {
   if (!trimmed) return null;
   if (trimmed.startsWith("data:")) return trimmed;
   return `data:image/*;base64,${trimmed}`;
+}
+
+function formatFecha(value) {
+  if (!value) return "-";
+  try {
+    // Soporta tanto ISO string como formato "yyyy-MM-ddTHH:mm:ss"
+    return new Date(value).toLocaleString();
+  } catch {
+    return value;
+  }
 }
 
 export default function ReporteConductorModal({ open, reporte, onClose, onCambiarEstado }) {
@@ -39,10 +48,17 @@ export default function ReporteConductorModal({ open, reporte, onClose, onCambia
                 {estadoMeta.label ?? reporte?.estado ?? "Estado"}
               </span>
               <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600">
-                ID: {reporte?.idReporte ?? "-"}
+                ID: #{reporte?.idReporteConductor ?? "-"}
               </span>
+              {reporte?.tipo && (
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-100 text-neutral-600">
+                  {reporte.tipo}
+                </span>
+              )}
             </div>
-            <h3 className="text-base font-semibold text-[#14201B] truncate">{reporte?.ubicacion || "UbicaciÃ³n"}</h3>
+            <h3 className="text-base font-semibold text-[#14201B] truncate">
+              {reporte?.ruta || "Ruta sin especificar"}
+            </h3>
           </div>
           <button
             type="button"
@@ -57,28 +73,33 @@ export default function ReporteConductorModal({ open, reporte, onClose, onCambia
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-lg bg-neutral-50 border border-neutral-100 px-3.5 py-3 flex items-start gap-2.5">
               <MapPin className="h-4 w-4 text-[#40916C] mt-0.5 shrink-0" />
-              <div>
-                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Ubicación</p>
-                <p className="text-sm font-medium text-[#14201B]">{reporte?.ubicacion || "-"}</p>
-              </div>
-            </div>
-
-            <div className="rounded-lg bg-neutral-50 border border-neutral-100 px-3.5 py-3 flex items-start gap-2.5">
-              <Calendar className="h-4 w-4 text-[#40916C] mt-0.5 shrink-0" />
-              <div>
-                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Fecha</p>
-                <p className="text-sm font-medium text-[#14201B]">{reporte?.fecha || "-"}</p>
+              <div className="min-w-0">
+                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Ruta</p>
+                <p className="text-sm font-medium text-[#14201B] truncate">{reporte?.ruta || "-"}</p>
               </div>
             </div>
 
             <div className="rounded-lg bg-neutral-50 border border-neutral-100 px-3.5 py-3 flex items-start gap-2.5">
               <Tag className="h-4 w-4 text-[#40916C] mt-0.5 shrink-0" />
               <div>
-                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Conductor</p>
-                <p className="text-sm font-medium text-[#14201B]">{reporte?.nombresUsuario || "-"}</p>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  Rol: {reporte?.rolUsuario || "-"} â€¢ ID: {reporte?.idUsuario ?? "-"}
-                </p>
+                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Tipo</p>
+                <p className="text-sm font-medium text-[#14201B]">{reporte?.tipo || "-"}</p>
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-neutral-50 border border-neutral-100 px-3.5 py-3 flex items-start gap-2.5">
+              <Clock className="h-4 w-4 text-[#40916C] mt-0.5 shrink-0" />
+              <div>
+                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Momento del hecho</p>
+                <p className="text-sm font-medium text-[#14201B]">{formatFecha(reporte?.momento)}</p>
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-neutral-50 border border-neutral-100 px-3.5 py-3 flex items-start gap-2.5">
+              <Calendar className="h-4 w-4 text-[#40916C] mt-0.5 shrink-0" />
+              <div>
+                <p className="text-[10px] text-neutral-400 uppercase tracking-wide">Fecha del reporte</p>
+                <p className="text-sm font-medium text-[#14201B]">{formatFecha(reporte?.fechaReporte)}</p>
               </div>
             </div>
           </div>
@@ -104,7 +125,9 @@ export default function ReporteConductorModal({ open, reporte, onClose, onCambia
             ) : (
               <div className="h-40 rounded-lg border border-neutral-200 bg-neutral-50 flex items-center justify-center gap-2 text-neutral-400">
                 <ImageIcon className="h-5 w-5" />
-                <span className="text-sm">{reporte?.fotoBase64 ? "No se pudo mostrar la imagen" : "Sin foto adjunta"}</span>
+                <span className="text-sm">
+                  {reporte?.fotoBase64 ? "No se pudo mostrar la imagen" : "Sin foto adjunta"}
+                </span>
               </div>
             )}
           </div>
@@ -146,4 +169,3 @@ export default function ReporteConductorModal({ open, reporte, onClose, onCambia
     </div>
   );
 }
-
