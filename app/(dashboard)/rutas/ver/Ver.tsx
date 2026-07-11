@@ -96,7 +96,7 @@ export default function VerRutaPage() {
       </div>
 
       {/* Mapa */}
-      <div className="h-[60vh] rounded-xl overflow-hidden border border-gray-200">
+      <div className="h-[70vh] rounded-xl overflow-hidden border border-gray-400">
         <RutaMapViewer coordenadas={ruta.coordenadas} nombre={ruta.nombre} />
       </div>
 

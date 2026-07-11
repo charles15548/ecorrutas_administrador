@@ -108,9 +108,9 @@ export default function RouteEditor({
         source: "ruta-en-progreso",
         layout: { "line-join": "round", "line-cap": "round" },
         paint: {
-          "line-color": "#2563eb",
+          "line-color": "#1B4332",
           "line-width": 5,
-          "line-opacity": 0.85,
+          "line-opacity": 0.65,
         },
       });
 
@@ -150,7 +150,7 @@ export default function RouteEditor({
 
     // Crear markers y puntos
     const nuevosPuntos: Punto[] = coords.map(([lng, lat]) => {
-      const marker = new maplibregl.Marker({ color: "#2563eb" })
+      const marker = new maplibregl.Marker({ color: "#1B4332" })
         .setLngLat([lng, lat])
         .addTo(map);
       markersRef.current.push(marker);
@@ -158,14 +158,21 @@ export default function RouteEditor({
     });
 
     // Un único tramo con todas las coordenadas
-    const tramoInicial: Tramo = {
-      coordenadas: coords,
-      distanciaMetros: rutaInicial.properties.distancia_metros ?? 0,
-      duracionSegundos: rutaInicial.properties.duracion_segundos ?? 0,
-    };
+    const tramosIniciales: Tramo[] = [];
+for (let i = 0; i < coords.length - 1; i++) {
+  const origen: Punto = { lng: coords[i][0], lat: coords[i][1] };
+  const destino: Punto = { lng: coords[i + 1][0], lat: coords[i + 1][1] };
+  const distancia = distanciaHaversine(origen, destino);
+  const duracionEstimada = (distancia / 1000 / VELOCIDAD_PROMEDIO_KMH) * 3600;
 
+  tramosIniciales.push({
+    coordenadas: [coords[i], coords[i + 1]],
+    distanciaMetros: distancia,
+    duracionSegundos: duracionEstimada,
+  });
+}
     setPuntos(nuevosPuntos);
-    setTramos([tramoInicial]);
+    setTramos(tramosIniciales);
 
     // Ajustar vista
     const bounds = new maplibregl.LngLatBounds();
@@ -223,7 +230,7 @@ export default function RouteEditor({
       try {
         const puntoEnganchado = await snapToRoad(clicOriginal);
 
-        const marker = new maplibregl.Marker({ color: "#2563eb" })
+        const marker = new maplibregl.Marker({ color: "#1B4332" })
           .setLngLat([puntoEnganchado.lng, puntoEnganchado.lat])
           .addTo(mapRef.current!);
         markersRef.current.push(marker);
@@ -342,10 +349,10 @@ export default function RouteEditor({
 
         {/* Resumen */}
         <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-900 flex flex-col gap-1">
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-gray-700">Puntos marcados</span>
             <span className="font-medium">{puntos.length}</span>
-          </div>
+          </div> */}
           <div className="flex justify-between">
             <span className="text-gray-700">Distancia total</span>
             <span className="font-medium">
@@ -402,7 +409,7 @@ export default function RouteEditor({
       {/* Mapa */}
       <div
         ref={mapContainerRef}
-        className="flex-1 rounded-xl overflow-hidden border border-gray-200 min-h-[400px]"
+        className="flex-1 rounded-xl overflow-hidden border border-gray-400 min-h-[400px]"
       />
     </div>
   );

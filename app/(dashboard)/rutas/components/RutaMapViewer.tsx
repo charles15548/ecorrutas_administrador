@@ -46,7 +46,7 @@ export default function RutaMapViewer({ coordenadas, nombre }: Props) {
         paint: {
           "line-color": "#1B4332",
           "line-width": 5,
-          "line-opacity": 0.9,
+          "line-opacity": 0.8,
         },
       });
 
