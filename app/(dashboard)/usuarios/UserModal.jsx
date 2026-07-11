@@ -1,33 +1,38 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { X, UserRound, Mail, Phone, Lock, ShieldCheck } from "lucide-react";
-
-const ROLES = [
-  { value: "administrador", label: "Administrador" },
-  { value: "conductor", label: "Conductor" },
-  { value: "ciudadano", label: "Ciudadano" },
-];
+import { useEffect, useMemo, useState } from "react";
+import { X, UserRound, Mail, Lock, ShieldCheck } from "lucide-react";
+import { listarRoles } from "../../lib/roles";
 
 const EMPTY_FORM = {
-  nombre: "",
+  nombres: "",
   correo: "",
-  telefono: "",
-  rol: "ciudadano",
-  estado: "activo",
+  idRol: "",
+  estado: true,
   password: "",
 };
 
 // mode: "create" | "edit" — mismo formulario para ambos casos
 export default function UserModal({ open, mode = "create", user = null, onClose, onSave }) {
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    if (!open) return;
+    listarRoles()
+      .then(setRoles)
+      .catch((err) => {
+        console.error(err);
+        setRoles([]);
+      });
+  }, [open]);
+
   const initialForm = useMemo(() => {
     if (mode === "edit" && user) {
       return {
-        nombre: user.nombre ?? "",
+        nombres: user.nombres ?? "",
         correo: user.correo ?? "",
-        telefono: user.telefono ?? "",
-        rol: user.rol ?? "ciudadano",
-        estado: user.estado ?? "activo",
+        idRol: user.idRol ?? "",
+        estado: user.estado ?? true,
         password: "",
       };
     }
@@ -59,7 +64,7 @@ export default function UserModal({ open, mode = "create", user = null, onClose,
             <p className="text-xs text-neutral-400 mt-0.5">
               {mode === "create"
                 ? "Registra un nuevo usuario en el sistema"
-                : `Actualizando a ${user?.nombre ?? ""}`}
+                : `Actualizando a ${user?.nombres ?? ""}`}
             </p>
           </div>
           <button
@@ -81,9 +86,9 @@ export default function UserModal({ open, mode = "create", user = null, onClose,
               <UserRound className="h-4 w-4 text-neutral-400 shrink-0" />
               <input
                 type="text"
-                value={form.nombre}
-                onChange={update("nombre")}
-                placeholder="Ej. María Quispe"
+                value={form.nombres}
+                onChange={update("nombres")}
+                placeholder="Ej. María Perez"
                 className="w-full bg-transparent text-sm text-[#14201B] placeholder:text-neutral-400 outline-none"
               />
             </div>
@@ -99,67 +104,50 @@ export default function UserModal({ open, mode = "create", user = null, onClose,
                 type="email"
                 value={form.correo}
                 onChange={update("correo")}
-                placeholder="correo@independencia.gob.pe"
+                placeholder="correo@gmail.com"
                 className="w-full bg-transparent text-sm text-[#14201B] placeholder:text-neutral-400 outline-none"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1.5">
-                Teléfono
-              </label>
-              <div className="flex items-center gap-2.5 rounded-lg border border-neutral-200 px-3.5 py-2.5 focus-within:border-[#40916C] focus-within:ring-1 focus-within:ring-[#40916C] transition-colors">
-                <Phone className="h-4 w-4 text-neutral-400 shrink-0" />
-                <input
-                  type="tel"
-                  value={form.telefono}
-                  onChange={update("telefono")}
-                  placeholder="999 999 999"
-                  className="w-full bg-transparent text-sm text-[#14201B] placeholder:text-neutral-400 outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1.5">
-                Rol
-              </label>
-              <div className="flex items-center gap-2.5 rounded-lg border border-neutral-200 px-3.5 py-2.5 focus-within:border-[#40916C] focus-within:ring-1 focus-within:ring-[#40916C] transition-colors">
-                <ShieldCheck className="h-4 w-4 text-neutral-400 shrink-0" />
-                <select
-                  value={form.rol}
-                  onChange={update("rol")}
-                  className="w-full bg-transparent text-sm text-[#14201B] outline-none"
-                >
-                  {ROLES.map((r) => (
-                    <option key={r.value} value={r.value}>
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <div>
+            <label className="block text-xs font-medium text-neutral-600 mb-1.5">
+              Rol
+            </label>
+            <div className="flex items-center gap-2.5 rounded-lg border border-neutral-200 px-3.5 py-2.5 focus-within:border-[#40916C] focus-within:ring-1 focus-within:ring-[#40916C] transition-colors">
+              <ShieldCheck className="h-4 w-4 text-neutral-400 shrink-0" />
+              <select
+                value={form.idRol}
+                onChange={update("idRol")}
+                className="w-full bg-transparent text-sm text-[#14201B] outline-none"
+              >
+                <option value="" disabled>
+                  Selecciona un rol
+                </option>
+                {roles.map((r) => (
+                  <option key={r.idRol} value={r.idRol}>
+                    {r.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {mode === "create" && (
-            <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-1.5">
-                Contraseña temporal
-              </label>
-              <div className="flex items-center gap-2.5 rounded-lg border border-neutral-200 px-3.5 py-2.5 focus-within:border-[#40916C] focus-within:ring-1 focus-within:ring-[#40916C] transition-colors">
-                <Lock className="h-4 w-4 text-neutral-400 shrink-0" />
-                <input
-                  type="password"
-                  value={form.password}
-                  onChange={update("password")}
-                  placeholder="••••••••"
-                  className="w-full bg-transparent text-sm text-[#14201B] placeholder:text-neutral-400 outline-none"
-                />
-              </div>
+          <div>
+            <label className="block text-xs font-medium text-neutral-600 mb-1.5">
+              {mode === "create" ? "Contraseña temporal" : "Nueva contraseña (opcional)"}
+            </label>
+            <div className="flex items-center gap-2.5 rounded-lg border border-neutral-200 px-3.5 py-2.5 focus-within:border-[#40916C] focus-within:ring-1 focus-within:ring-[#40916C] transition-colors">
+              <Lock className="h-4 w-4 text-neutral-400 shrink-0" />
+              <input
+                type="password"
+                value={form.password}
+                onChange={update("password")}
+                placeholder={mode === "create" ? "••••••••" : "Dejar en blanco para no cambiarla"}
+                className="w-full bg-transparent text-sm text-[#14201B] placeholder:text-neutral-400 outline-none"
+              />
             </div>
-          )}
+          </div>
 
           {/* estado — solo visible al editar */}
           {mode === "edit" && (
@@ -168,20 +156,23 @@ export default function UserModal({ open, mode = "create", user = null, onClose,
                 Estado
               </label>
               <div className="flex gap-2">
-                {["activo", "inactivo"].map((s) => (
+                {[
+                  { value: true, label: "activo" },
+                  { value: false, label: "inactivo" },
+                ].map((s) => (
                   <button
-                    key={s}
+                    key={s.label}
                     type="button"
-                    onClick={() => setForm((f) => ({ ...f, estado: s }))}
+                    onClick={() => setForm((f) => ({ ...f, estado: s.value }))}
                     className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium capitalize transition-colors ${
-                      form.estado === s
-                        ? s === "activo"
+                      form.estado === s.value
+                        ? s.value
                           ? "border-[#40916C] bg-[#D8F3DC] text-[#1B4332]"
                           : "border-neutral-300 bg-neutral-100 text-neutral-600"
                         : "border-neutral-200 text-neutral-400 hover:border-neutral-300"
                     }`}
                   >
-                    {s}
+                    {s.label}
                   </button>
                 ))}
               </div>
@@ -200,7 +191,7 @@ export default function UserModal({ open, mode = "create", user = null, onClose,
           </button>
           <button
             type="button"
-            onClick={() => onSave?.(form)}
+            onClick={() => onSave?.({ ...form, idRol: Number(form.idRol) })}
             className="px-4 py-2 rounded-lg bg-[#1B4332] text-white text-sm font-semibold hover:bg-[#163C2D] active:bg-[#0F2C22] transition-colors"
           >
             {mode === "create" ? "Crear usuario" : "Guardar cambios"}
