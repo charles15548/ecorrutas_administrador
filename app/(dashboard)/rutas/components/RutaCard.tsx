@@ -91,5 +91,7 @@ export default function RutaCard({ ruta, onEliminar, eliminando }: Props) {
         </button>
       </div>
     </div>
-  );
+ 
+
+);
 }
