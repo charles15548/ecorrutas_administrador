@@ -15,7 +15,7 @@ const TILE_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 // ─────────────────────────────────────────────────────────
 // TIPOS
 // ─────────────────────────────────────────────────────────
-type Punto = { lng: number; lat: number }; 
+type Punto = { lng: number; lat: number };
 type Tramo = {
   coordenadas: [number, number][];
   distanciaMetros: number;
@@ -77,7 +77,7 @@ export default function RouteEditor({
   const [cargandoTramo, setCargandoTramo] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [nombre, setNombre] = useState(""); 
+  const [nombre, setNombre] = useState("");
 
   const [mapReady, setMapReady] = useState(false);
 
@@ -159,18 +159,19 @@ export default function RouteEditor({
 
     // Un único tramo con todas las coordenadas
     const tramosIniciales: Tramo[] = [];
-for (let i = 0; i < coords.length - 1; i++) {
-  const origen: Punto = { lng: coords[i][0], lat: coords[i][1] };
-  const destino: Punto = { lng: coords[i + 1][0], lat: coords[i + 1][1] };
-  const distancia = distanciaHaversine(origen, destino);
-  const duracionEstimada = (distancia / 1000 / VELOCIDAD_PROMEDIO_KMH) * 3600;
+    for (let i = 0; i < coords.length - 1; i++) {
+      const origen: Punto = { lng: coords[i][0], lat: coords[i][1] };
+      const destino: Punto = { lng: coords[i + 1][0], lat: coords[i + 1][1] };
+      const distancia = distanciaHaversine(origen, destino);
+      const duracionEstimada =
+        (distancia / 1000 / VELOCIDAD_PROMEDIO_KMH) * 3600;
 
-  tramosIniciales.push({
-    coordenadas: [coords[i], coords[i + 1]],
-    distanciaMetros: distancia,
-    duracionSegundos: duracionEstimada,
-  });
-}
+      tramosIniciales.push({
+        coordenadas: [coords[i], coords[i + 1]],
+        distanciaMetros: distancia,
+        duracionSegundos: duracionEstimada,
+      });
+    }
     setPuntos(nuevosPuntos);
     setTramos(tramosIniciales);
 
@@ -258,20 +259,17 @@ for (let i = 0; i < coords.length - 1; i++) {
 
   // ── Agregar tramo ───────────────────────────────────────
   const agregarTramo = async (origen: Punto, destino: Punto) => {
-   
-      const distancia = distanciaHaversine(origen, destino);
-      const duracionEstimada =
-        (distancia / 1000 / VELOCIDAD_PROMEDIO_KMH) * 3600;
-      const nuevoTramo: Tramo = {
-        coordenadas: [
-          [origen.lng, origen.lat],
-          [destino.lng, destino.lat],
-        ],
-        distanciaMetros: distancia,
-        duracionSegundos: duracionEstimada,
-      };
-      setTramos((prev) => [...prev, nuevoTramo]);
-        
+    const distancia = distanciaHaversine(origen, destino);
+    const duracionEstimada = (distancia / 1000 / VELOCIDAD_PROMEDIO_KMH) * 3600;
+    const nuevoTramo: Tramo = {
+      coordenadas: [
+        [origen.lng, origen.lat],
+        [destino.lng, destino.lat],
+      ],
+      distanciaMetros: distancia,
+      duracionSegundos: duracionEstimada,
+    };
+    setTramos((prev) => [...prev, nuevoTramo]);
   };
 
   // ── Deshacer / limpiar ──────────────────────────────────
@@ -325,13 +323,10 @@ for (let i = 0; i < coords.length - 1; i++) {
       {/* Panel lateral */}
       <div className="w-full md:w-80 flex flex-col gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm shrink-0">
         <div>
-           
           <p className="text-sm text-gray-700 mt-1">
             Haz clic en el mapa para ir marcando el recorrido, calle por calle.
           </p>
         </div>
-
-        
 
         {/* Nombre */}
         <div className="flex flex-col gap-1">

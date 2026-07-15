@@ -15,8 +15,8 @@ interface Props {
 export default function RutaMapViewer({ coordenadas, nombre }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
-  const markersRef = useRef<Marker[]>([]); // 👈 Para trackear y limpiar markers
-  const [mapReady, setMapReady] = useState(false); // 👈 Estado para saber si el mapa ya cargó
+  const markersRef = useRef<Marker[]>([]); //  Para trackear y limpiar markers
+  const [mapReady, setMapReady] = useState(false); //  Estado para saber si el mapa ya cargó
 
   // ── Inicializar el mapa una sola vez ─────────────────────
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function RutaMapViewer({ coordenadas, nombre }: Props) {
         },
       });
 
-      // 👇 Avisamos que el mapa ya está listo para dibujar
+      //   Avisamos que el mapa ya está listo para dibujar
       setMapReady(true);
     });
 
@@ -64,7 +64,7 @@ export default function RutaMapViewer({ coordenadas, nombre }: Props) {
 
   // ── Dibujar la ruta y los markers cuando el mapa esté listo ──
   useEffect(() => {
-    if (!mapReady) return; // 👈 Esperamos a que el mapa esté listo
+    if (!mapReady) return; //  Esperamos a que el mapa esté listo
     const map = mapRef.current;
     if (!map || !map.getSource("ruta")) return;
 
@@ -116,7 +116,7 @@ export default function RutaMapViewer({ coordenadas, nombre }: Props) {
       coordenadas.forEach(([lng, lat]) => bounds.extend([lng, lat]));
       map.fitBounds(bounds, { padding: 60 });
     }
-  }, [coordenadas, mapReady, nombre]); // 👈 Dependencias correctas
+  }, [coordenadas, mapReady, nombre]); //  Dependencias correctas
 
   return <div ref={containerRef} className="w-full h-full" />;
 }
