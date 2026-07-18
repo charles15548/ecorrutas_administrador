@@ -1,5 +1,5 @@
 "use client";
-
+import {login} from "./lib/auth"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, User, Lock, Eye, EyeOff, MapPin } from "lucide-react";
@@ -23,25 +23,29 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+ 
+const handleLogin = async () => {
+  setError(null);
 
-  // Ejemplo para demo (solo para que funcione el login en local).
-  const DEMO_ADMIN = { correo: "admin@gmail.com", contraseña: "admin" } as const;
+  try {
+    const response = await login(email, password);
 
-  const handleLogin = () => {
-    const correoIngresado = email.trim().toLowerCase();
-    const passwordIngresado = password;
-
-    if (
-      correoIngresado === DEMO_ADMIN.correo.toLowerCase() &&
-      passwordIngresado === DEMO_ADMIN["contraseña"]
-    ) {
-      setError(null);
-      router.push("/bienvenida");
+    if (response.mensaje !== "Login correcto") {
+      setError(response.mensaje);
       return;
     }
 
-    setError("Credenciales inválidas. ");
-  };
+    // Guardar datos del usuario
+    localStorage.setItem("usuario", JSON.stringify(response));
+
+    // Redireccionar
+    router.push("/bienvenida");
+
+  } catch (error) {
+    console.error(error);
+    setError("Ocurrió un error al iniciar sesión.");
+  }
+};
 
   return (
     <div className="min-h-screen w-full grid lg:grid-cols-2 bg-[#F8F6F0]">
