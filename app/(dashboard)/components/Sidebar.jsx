@@ -8,6 +8,7 @@ import {
   Route,
   Radar,
   FileWarning,
+  ClipboardList,
   LogOut,
 } from "lucide-react";
 
@@ -15,11 +16,13 @@ import {
 const NAV_ITEMS = [
   { cu: null, label: "Bienvenida", href: "/bienvenida", icon: LayoutDashboard },
   { cu: " ", label: "Gestionar usuarios", href: "/usuarios", icon: Users },
+  { cu: " ",label: "Solicitudes Pendientes",href: "/solicitudes",icon: ClipboardList,},
   { cu: " ", label: "Gestionar rutas", href: "/rutas", icon: Map },
   { cu: " ", label: "Asignar rutas", href: "/asignar-rutas", icon: Route },
   // { cu: " ", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
   { cu: " ", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
   { cu: " ", label: "Reportes conductores", href: "/reportes-conductores", icon: FileWarning },
+  
 ];
 
 export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {

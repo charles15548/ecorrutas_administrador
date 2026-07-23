@@ -32,3 +32,30 @@ export function editarUsuario(idUsuario, usuarioRequest) {
   });
 }
 
+
+// ── Listar solicitudes pendientes ─────────────────────────
+export function listarSolicitudesPendientes() {
+  return requestJson("/api/usuarios/solicitudes-pendientes", {
+    method: "GET",
+  });
+}
+
+// ── Aprobar solicitud ─────────────────────────────────────
+export function aprobarSolicitud(idUsuario) {
+  if (idUsuario == null)
+    throw new Error("idUsuario es requerido");
+
+  return requestJson(`/api/usuarios/${idUsuario}/aprobar`, {
+    method: "PATCH",
+  });
+}
+
+// ── Rechazar solicitud ────────────────────────────────────
+export function rechazarSolicitud(idUsuario) {
+  if (idUsuario == null)
+    throw new Error("idUsuario es requerido");
+
+  return requestJson(`/api/usuarios/${idUsuario}/rechazar`, {
+    method: "PATCH",
+  });
+}
