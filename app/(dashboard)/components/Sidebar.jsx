@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   { cu: " ",label: "Solicitudes Pendientes",href: "/solicitudes",icon: ClipboardList,},
   { cu: " ", label: "Gestionar rutas", href: "/rutas", icon: Map },
   { cu: " ", label: "Asignar rutas", href: "/asignar-rutas", icon: Route },
-  // { cu: " ", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
+  { cu: " ", label: "Monitorear recolectores", href: "/monitoreo", icon: Radar },
   { cu: " ", label: "Reportes ciudadanos", href: "/reportes", icon: FileWarning },
   { cu: " ", label: "Reportes conductores", href: "/reportes-conductores", icon: FileWarning },
   
@@ -39,12 +39,10 @@ export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
     >
       {/* brand */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/10">
-        {/* <div className="h-9 w-9 rounded-lg bg-[#40916C] flex items-center justify-center shrink-0">
-          <Truck className="h-5 w-5 text-[#F8F6F0]" strokeWidth={2.25} />
-        </div> */}
+        
         <div className="leading-none">
           <p className="font-bold tracking-tight text-sm">ECO SMART</p>
-          <p className="text-[10px] uppercase tracking-widest text-[#95D5B2] mt-1">
+          <p className="text-[10px] uppercase tracking-widest text-[var(--ColorVerde)] mt-1">
             Panel municipal
           </p>
         </div>
@@ -88,9 +86,9 @@ export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
       {/* user / logout */}
       <div className="px-3 py-4 border-t border-white/10">
         <div className="flex items-center gap-3 px-2 py-2 mb-2">
-          <div className="h-8 w-8 rounded-full bg-[#95D5B2] flex items-center justify-center text-[#0F2C22] text-xs font-bold shrink-0">
+          <div className="h-8 w-8 rounded-full bg-[var(--ColorVerde)] flex items-center justify-center text-[var(--ColorVerdeHover)] text-xs font-bold shrink-0">
             AM
-          </div>
+          </div> 
           <div className="leading-none flex-1 min-w-0">
             <p className="text-xs font-semibold truncate">Admin Municipal</p>
             <p className="text-[10px] text-[#9FC7B4] truncate">Independencia, Lima</p>

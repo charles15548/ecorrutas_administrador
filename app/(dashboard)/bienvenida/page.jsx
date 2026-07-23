@@ -7,8 +7,7 @@ import {
   Radar, 
   FileWarning,
   TrendingUp,
-  Truck,  
-  Bell,
+  Truck,   
 } from "lucide-react";
  
 import { listarRutas } from "../../lib/rutas";  
@@ -95,12 +94,7 @@ export default function BienvenidaPage() {
             Esto es lo que está pasando en Independencia hoy
           </p>
         </div>
-        <button
-          type="button"
-          className="h-10 w-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center hover:border-[#40916C] transition-colors shrink-0"
-        >
-          <Bell className="h-4 w-4 text-[#1B4332]" />
-        </button>
+        
       </div>
 
       {/* stat cards */}
