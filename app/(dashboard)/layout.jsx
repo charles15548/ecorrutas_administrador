@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import AdminSidebar from "./components/Sidebar";
 
 export default function DashboardLayout({ children }) {
   const [desktopCollapsed, setDesktopCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    try {
+      const usuario = localStorage.getItem("usuario");
+
+      if (!usuario) {
+        router.replace("/");
+        return;
+      }
+
+      setAuthorized(true);
+    } catch {
+      router.replace("/");
+    }
+  }, [router]);
+
+  if (!authorized) {
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#F8F6F0]">

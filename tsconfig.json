@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/(dashboard)/monitoreo/components/MapaMonitoreo.jsx", "app/(dashboard)/monitoreo/components/ListaCamiones.jsx"  ],
   "exclude": ["node_modules"]
 }

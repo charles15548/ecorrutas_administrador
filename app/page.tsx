@@ -1,6 +1,6 @@
 "use client";
 import {login} from "./lib/auth"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, User, Lock, Eye, EyeOff, MapPin } from "lucide-react";
 
@@ -23,6 +23,18 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    try {
+      const usuario = localStorage.getItem("usuario");
+
+      if (usuario) {
+        router.replace("/bienvenida");
+      }
+    } catch {
+      // Ignorar errores de almacenamiento
+    }
+  }, [router]);
  
 const handleLogin = async () => {
   setError(null);
