@@ -15,11 +15,7 @@ import {
 } from "lucide-react";
 import { crearAsignacion } from "../../lib/rutasAsignar";
 
-const ESTADOS = [
-  { value: "Activa", label: "Activa", hint: "El conductor ya puede iniciar la ruta" },
-  { value: "Pendiente", label: "Pendiente", hint: "Se activará más adelante" },
-  { value: "Finalizada", label: "Finalizada", hint: "La ruta ya se completó" },
-];
+
 
 const STEPS = [
   { id: 1, label: "Ruta" },
@@ -49,7 +45,7 @@ export default function AsignarRutaModal({ open, onClose, rutas, conductores, on
   const [fechaAsignacion, setFechaAsignacion] = useState(new Date().toISOString().slice(0, 10));
   const [horaInicio, setHoraInicio] = useState("08:00");
   const [horaFin, setHoraFin] = useState("12:00");
-  const [estado, setEstado] = useState("Activa");
+  
   const [buscarRuta, setBuscarRuta] = useState("");
   const [buscarConductor, setBuscarConductor] = useState("");
   const [saving, setSaving] = useState(false);
@@ -64,7 +60,6 @@ export default function AsignarRutaModal({ open, onClose, rutas, conductores, on
       setFechaAsignacion(new Date().toISOString().slice(0, 10));
       setHoraInicio("08:00");
       setHoraFin("12:00");
-      setEstado("Activa");
       setBuscarRuta("");
       setBuscarConductor("");
       setSaving(false);
@@ -113,14 +108,13 @@ export default function AsignarRutaModal({ open, onClose, rutas, conductores, on
     setSaving(true);
     setError(null);
     try {
-      const result = await crearAsignacion({
-        idRuta,
-        idUsuario,
-        fechaAsignacion,
-        horaInicio,
-        horaFin,
-        estado,
-      });
+     const result = await crearAsignacion({
+  idRuta,
+  idUsuario,
+  fechaAsignacion,
+  horaInicio,
+  horaFin,
+});
 
       if (result?.idAsignacion) {
         onSuccess?.(result);
@@ -361,26 +355,7 @@ export default function AsignarRutaModal({ open, onClose, rutas, conductores, on
                 </label>
               </div>
 
-              <div className="space-y-2">
-                <p className="text-sm text-neutral-700">Estado</p>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {ESTADOS.map((e) => (
-                    <button
-                      key={e.value}
-                      type="button"
-                      onClick={() => setEstado(e.value)}
-                      className={`rounded-2xl border px-3 py-2.5 text-left transition-colors ${
-                        estado === e.value
-                          ? "border-[#40916C] bg-[#E9F5EE]"
-                          : "border-neutral-200 hover:border-neutral-300"
-                      }`}
-                    >
-                      <p className="text-sm font-semibold text-[#14201B]">{e.label}</p>
-                      <p className="text-xs text-neutral-500">{e.hint}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
+              
             </div>
           )}
         </div>
