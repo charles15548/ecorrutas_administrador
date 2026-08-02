@@ -31,6 +31,17 @@ export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
 
   const isMobile = variant === "mobile";
 
+  const cerrarSesion = () => {
+    try {
+      localStorage.removeItem("usuario");
+    } catch {
+      // Ignorar errores de almacenamiento
+    }
+
+    onNavigate?.();
+    router.replace("/");
+  };
+
   return (
     <aside
       className={`${
@@ -96,10 +107,7 @@ export default function AdminSidebar({ variant = "desktop", onNavigate } = {}) {
         </div>
         <button
           type="button"
-          onClick={() => {
-            router.push("/");
-            onNavigate?.();
-          }}
+          onClick={cerrarSesion}
           className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#CDE7DA] hover:bg-white/5 hover:text-[#F8F6F0] transition-colors"
         >
           <LogOut className="h-4 w-4 shrink-0" strokeWidth={2} />
