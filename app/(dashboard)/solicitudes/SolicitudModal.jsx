@@ -11,9 +11,13 @@ export default function SolicitudModal({
 }) {
   if (!open || !solicitud) return null;
 
-  const esConductor =
-    solicitud.nombreRol === "Conductor" ||
-    solicitud.tipoUsuario === "Conductor";
+ const rol = (
+    solicitud.nombreRol ??
+    solicitud.tipoUsuario ??
+    ""
+).toUpperCase();
+
+const esConductor = rol === "CONDUCTOR";
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
